@@ -5,8 +5,8 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import com.inditex.service.domain.model.Price;
-import com.inditex.service.domain.model.port.in.PriceServicesPort;
-import com.inditex.service.domain.model.port.out.PricePersistencePort;
+import com.inditex.service.domain.port.in.PriceServicesPort;
+import com.inditex.service.domain.port.out.PricePersistencePort;
 
 @Service
 public class PriceServices implements PriceServicesPort {

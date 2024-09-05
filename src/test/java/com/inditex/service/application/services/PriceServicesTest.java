@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.inditex.service.domain.model.Price;
-import com.inditex.service.domain.model.port.out.PricePersistencePort;
+import com.inditex.service.domain.port.out.PricePersistencePort;
 
 public class PriceServicesTest {
 	

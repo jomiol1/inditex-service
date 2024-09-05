@@ -1,4 +1,4 @@
-package com.inditex.service.domain.model.port.in;
+package com.inditex.service.domain.port.in;
 
 import java.util.Date;
 

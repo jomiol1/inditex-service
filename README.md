@@ -31,12 +31,15 @@ Ejecutar proyecto por maven
 mvn spring-boot:run
 
 ```
+### Uso
+
+Luego de ejecutar el proyecto, podemos visualizar la información de la api a través de la herramienta swagger con el siguiente link de acceso: [http://localhost:8080/swagger-ui.html#/](http://localhost:8080/swagger-ui.html#/ "Swagger UI") Adicionalmente se puede utilizar la colección de Postman con los casos de prueba
 
 ### Consulta de precio aplicado
 
 <bold>Endpoint para consultar precio aplicado a un producto especifico</bold>
 
 ```
-GET(/api/inditex/findPriceBetweenDates/{dateSearch}/{productId}/{brandId})   
+GET(/v1/inditex/price?date={date}&productId={productId}&brandId={brandId})   
 
 ```

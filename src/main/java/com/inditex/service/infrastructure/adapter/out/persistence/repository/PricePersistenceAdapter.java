@@ -4,9 +4,9 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+import com.inditex.service.domain.exception.PriceNotFound;
 import com.inditex.service.domain.model.Price;
-import com.inditex.service.domain.model.exception.PriceNotFound;
-import com.inditex.service.domain.model.port.out.PricePersistencePort;
+import com.inditex.service.domain.port.out.PricePersistencePort;
 import com.inditex.service.infrastructure.adapter.out.persistence.entity.PriceEntity;
 
 @Service
@@ -24,7 +24,7 @@ public class PricePersistenceAdapter implements PricePersistencePort {
 		PriceEntity priceEntity =  priceRepository.findPriceBetweenDates(searchDate, productId, brandId)
 				.orElseThrow(PriceNotFound::new);
 		
-		return priceEntity.toDomainModel();
+		return PersistenceMapper.toDomainModel(priceEntity);
 	}
 
 }

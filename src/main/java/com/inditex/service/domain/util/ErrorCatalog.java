@@ -1,4 +1,4 @@
-package com.inditex.service.domain.model.utils;
+package com.inditex.service.domain.util;
 
 import lombok.Getter;
 
@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum ErrorCatalog {
 
 	GENERIC_ERROR("00", "An unexpected error occurred."),
-	PRICE_NOT_FOUND("01", "Price not found.");
+	PRICE_NOT_FOUND("01", "Price not found."),
+	DATE_FORMAT_ERROR("02", "Date format error.");
 
   private final String code;
   private final String message;

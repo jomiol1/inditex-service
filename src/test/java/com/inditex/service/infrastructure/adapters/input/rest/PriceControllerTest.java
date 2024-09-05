@@ -1,60 +1,102 @@
 package com.inditex.service.infrastructure.adapters.input.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.inditex.service.domain.model.Price;
-import com.inditex.service.domain.model.exception.PriceNotFound;
-import com.inditex.service.domain.model.port.in.PriceServicesPort;
-
-@WebMvcTest(PriceController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PriceControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
-
-    @MockBean
-    private PriceServicesPort priceServices;
     
     @Test
-    void testFindPriceBetweenDatesOK() throws Exception {
+    void testFindPriceBetweenDatesCaseOne() throws Exception {
 
-    	Price price = Price.builder().id(1).brand("zara").currency("EUR").endDate(new Date())
-    			.price("20").priority(1).product("test").startDate(new Date()).build();
-        when(priceServices.findPriceBetweenDates(any(),anyInt(),anyInt())).thenReturn(price);
-
-        mockMvc.perform(get("/api/inditex/findPriceBetweenDates/2020-06-15-16.00.00/35455/1")
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-14-10.00.00&productId=35455&brandId=1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.brand").value("zara"))
-                .andExpect(jsonPath("$.currency").value("EUR"))
-                .andExpect(jsonPath("$.price").value("20"))
-                .andExpect(jsonPath("$.priority").value(1))
-                .andExpect(jsonPath("$.product").value("test"));
+                .andExpect(jsonPath("$.brand").value("Zara"))
+                .andExpect(jsonPath("$.product").value("camisa lino"))
+                .andExpect(jsonPath("$.price").value("35.50"));
+     
+    }
+    
+    @Test
+    void testFindPriceBetweenDatesCaseTwo() throws Exception {
+
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-14-16.00.00&productId=35455&brandId=1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.brand").value("Zara"))
+                .andExpect(jsonPath("$.product").value("camisa lino"))
+                .andExpect(jsonPath("$.price").value("25.45"));
+     
+    }
+    
+    @Test
+    void testFindPriceBetweenDatesCaseThree() throws Exception {
+
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-14-21.00.00&productId=35455&brandId=1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.brand").value("Zara"))
+                .andExpect(jsonPath("$.product").value("camisa lino"))
+                .andExpect(jsonPath("$.price").value("35.50"));
+     
+    }
+    
+    @Test
+    void testFindPriceBetweenDatesCaseFour() throws Exception {
+
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-15-10.00.00&productId=35455&brandId=1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(3))
+                .andExpect(jsonPath("$.brand").value("Zara"))
+                .andExpect(jsonPath("$.product").value("camisa lino"))
+                .andExpect(jsonPath("$.price").value("30.50"));
+     
+    }
+    
+    @Test
+    void testFindPriceBetweenDatesCaseFive() throws Exception {
+
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-16-21.00.00&productId=35455&brandId=1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(4))
+                .andExpect(jsonPath("$.brand").value("Zara"))
+                .andExpect(jsonPath("$.product").value("camisa lino"))
+                .andExpect(jsonPath("$.price").value("38.95"));
+     
     }
     
     @Test
     void testFindPriceBetweenDatesNotFound() throws Exception {
 
-        when(priceServices.findPriceBetweenDates(any(),anyInt(),anyInt())).thenThrow(new PriceNotFound());
-
-        mockMvc.perform(get("/api/inditex/findPriceBetweenDates/2020-06-15-16.00.00/35455/1")
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-14-10.00.00&productId=35455&brandId=3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+    
+    @Test
+    void testFindPriceBetweenDatesBadRequest() throws Exception {
+
+        mockMvc.perform(get("/v1/inditex/price?date=2020-06-14-10-00-00&productId=35455&brandId=3")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
 }

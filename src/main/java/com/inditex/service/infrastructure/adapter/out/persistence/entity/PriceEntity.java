@@ -2,8 +2,6 @@ package com.inditex.service.infrastructure.adapter.out.persistence.entity;
 
 import java.util.Date;
 
-import com.inditex.service.domain.model.Price;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,11 +44,5 @@ public class PriceEntity {
 
     @Column(name = "CURRENCY")
     private String currency;
-    
-    public Price toDomainModel() {
-    	return Price.builder().id(id).brand(brand.getName()).startDate(startDate)
-    			.endDate(endDate).product(product.getName()).priority(priority)
-    			.price(price).currency(currency).build();
-    }
 	
 }
